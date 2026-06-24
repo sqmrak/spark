@@ -1,0 +1,27 @@
+[package]
+name = "spark"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.85"
+
+[dependencies]
+nexus = { git = "https://github.com/sqmrak/nexus", branch = "main", package = "nexus-core" }
+ureq = "3"
+sha2 = "0.11"
+tar = "0.4"
+xz2 = "0.1"
+ratatui = "0.30"
+crossterm = "0.29"
+libc = "0.2"
+rustix = { version = "1.1", features = ["mount", "process"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
+
+[lints.rust]
+unused_must_use = "deny"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
