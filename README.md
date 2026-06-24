@@ -1,7 +1,5 @@
 # spark
 
-test suite for the nexus core
-
 ![tui](assets/tui.png)
 
 uses the public api against a live kernel inside throwaway sandboxes. not mocks -
