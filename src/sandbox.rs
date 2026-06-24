@@ -49,10 +49,12 @@ impl Sandbox {
                 return Err(Error::Stale(base));
             }
         }
-        std::fs::create_dir_all(&base).map_err(|e| Error::Io { op: format!("mkdir {base:?}"), source: e })?;
+        std::fs::create_dir_all(&base)
+            .map_err(|e| Error::Io { op: format!("mkdir {base:?}"), source: e })?;
 
         let root = base.join("rust");
-        std::fs::create_dir_all(&root).map_err(|e| Error::Io { op: format!("mkdir {root:?}"), source: e })?;
+        std::fs::create_dir_all(&root)
+            .map_err(|e| Error::Io { op: format!("mkdir {root:?}"), source: e })?;
         Ok(Sandbox { base, layout: Layout::new(root) })
     }
 
@@ -92,7 +94,9 @@ fn unmount_under(base: &Path) {
     }
     targets.sort_by(|a, b| b.cmp(a));
     for t in &targets {
-        let rc = unsafe { libc::umount2(t.as_os_str().as_encoded_bytes().as_ptr() as *const _, libc::MNT_DETACH) };
+        let rc = unsafe {
+            libc::umount2(t.as_os_str().as_encoded_bytes().as_ptr() as *const _, libc::MNT_DETACH)
+        };
         if rc == 0 {
             continue;
         }

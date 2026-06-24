@@ -197,8 +197,11 @@ mod tests {
         assert!(!ns.on);
 
         let root = MenuState::new(caps(true, true));
-        let ns =
-            root.items.iter().find(|i| matches!(i.class, ItemKind::Cat(Category::Namespace))).unwrap();
+        let ns = root
+            .items
+            .iter()
+            .find(|i| matches!(i.class, ItemKind::Cat(Category::Namespace)))
+            .unwrap();
         assert!(ns.enabled && ns.on);
     }
 

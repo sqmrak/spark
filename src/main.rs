@@ -18,7 +18,12 @@ fn main() {
         std::process::exit(2);
     }
 
-    if !std::process::Command::new("which").arg("mkfs.erofs").output().map(|o| o.status.success()).unwrap_or(false) {
+    if !std::process::Command::new("which")
+        .arg("mkfs.erofs")
+        .output()
+        .map(|o| o.status.success())
+        .unwrap_or(false)
+    {
         eprintln!("[wrn] erofs-utils not found, mkfs.erofs tests will skip");
     }
 

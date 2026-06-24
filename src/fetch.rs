@@ -70,17 +70,19 @@ pub fn void_musl() -> Result<Source, Error> {
 // fetch sha256sum.txt from the void mirror and find the latest rootfs
 fn refresh(prefix: &str) -> Result<Source, Error> {
     let url = format!("{VOID_MIRROR}/sha256sum.txt");
-    let resp =
-        ureq::get(&url).call().map_err(|e| Error::Http { url, source: Box::new(e) })?;
-    let text = resp.into_body().read_to_string().map_err(|e| {
-        Error::Io { op: "read sha256sum".into(), source: std::io::Error::other(e.to_string()) }
+    let resp = ureq::get(&url).call().map_err(|e| Error::Http { url, source: Box::new(e) })?;
+    let text = resp.into_body().read_to_string().map_err(|e| Error::Io {
+        op: "read sha256sum".into(),
+        source: std::io::Error::other(e.to_string()),
     })?;
     for line in text.lines() {
         if !line.starts_with("SHA256 (") {
             continue;
         }
         let rest = &line["SHA256 (".len()..];
-        let (filename, hash) = rest.split_once(") = ").ok_or_else(|| Error::Unpack("malformed sha256sum line".into()))?;
+        let (filename, hash) = rest
+            .split_once(") = ")
+            .ok_or_else(|| Error::Unpack("malformed sha256sum line".into()))?;
         if filename.starts_with(prefix) && filename.ends_with(".tar.xz") {
             let name = if prefix.contains("musl") { "void-musl" } else { "void-glibc" };
             return Ok(Source {

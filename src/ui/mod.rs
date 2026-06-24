@@ -176,12 +176,7 @@ mod tests {
     fn renders_without_panic() {
         let st = State {
             tests: vec![
-                Row {
-                    name: "namespace: glibc".into(),
-                    status: Status::Pass,
-                    passed: 8,
-                    failed: 0,
-                },
+                Row { name: "namespace: glibc".into(), status: Status::Pass, passed: 8, failed: 0 },
                 Row {
                     name: "namespace: musl".into(),
                     status: Status::Running,

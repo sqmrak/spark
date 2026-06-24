@@ -58,7 +58,10 @@ pub fn boot<F: FnOnce(&VerdictWriter)>(body: F) -> Boot {
     let pid = unsafe { libc::fork() };
     if pid < 0 {
         // SAFETY: closing valid pipe fds on fork failure
-        unsafe { libc::close(vr); libc::close(vw); }
+        unsafe {
+            libc::close(vr);
+            libc::close(vw);
+        }
         return Boot::Failed("fork".into());
     }
 
@@ -162,8 +165,11 @@ pub(crate) fn enter_ns(add_pid: bool) -> Result<(), NamespaceEntry> {
     let ns_flags = if root {
         if add_pid { libc::CLONE_NEWPID | libc::CLONE_NEWNS } else { libc::CLONE_NEWNS }
     } else {
-        if add_pid { libc::CLONE_NEWUSER | libc::CLONE_NEWPID | libc::CLONE_NEWNS }
-        else { libc::CLONE_NEWUSER | libc::CLONE_NEWNS }
+        if add_pid {
+            libc::CLONE_NEWUSER | libc::CLONE_NEWPID | libc::CLONE_NEWNS
+        } else {
+            libc::CLONE_NEWUSER | libc::CLONE_NEWNS
+        }
     };
 
     // SAFETY: unshare(2) has no memory safety requirements. flags are valid

@@ -27,13 +27,13 @@ pub fn run_as_root<F: FnOnce() -> i32>(body: F) -> Setup {
         return Setup::Failed("fork".into());
     }
 
-        if pid == 0 {
-            unsafe { libc::close(rd) };
-            let verdict = match crate::init::enter_ns(false) {
-                Ok(()) => b'S',
-                Err(crate::init::NamespaceEntry::Unsupported) => b'U',
-                Err(crate::init::NamespaceEntry::Other) => b'E',
-            };
+    if pid == 0 {
+        unsafe { libc::close(rd) };
+        let verdict = match crate::init::enter_ns(false) {
+            Ok(()) => b'S',
+            Err(crate::init::NamespaceEntry::Unsupported) => b'U',
+            Err(crate::init::NamespaceEntry::Other) => b'E',
+        };
         unsafe {
             libc::write(wr, [verdict].as_ptr() as *const _, 1);
             libc::close(wr);

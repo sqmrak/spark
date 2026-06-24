@@ -46,7 +46,8 @@ impl Test for ErrorPaths {
         };
 
         // run on an unknown layer > UnknownLayer too (errors before exec)
-        let missing = LayerId::new("nonexistent_gen").expect("\"nonexistent_gen\" is a valid layer id");
+        let missing =
+            LayerId::new("nonexistent_gen").expect("\"nonexistent_gen\" is a valid layer id");
         match core.run(&missing, &["/bin/true".into()], &[]) {
             Err(Error::UnknownLayer(_)) => tcx.ok(true, "run unknown >  UnknownLayer"),
             other => tcx.ok(false, &format!("run unknown: expected UnknownLayer, got {other:?}")),
