@@ -20,4 +20,4 @@ real mount, pid, cgroup and user namespaces at full speed
 
 ## license
 
-GPL-2.0
+GPL-2.0-only
